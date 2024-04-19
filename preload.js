@@ -1,8 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron');
+const fs = require('fs');
 
-contextBridge.exposeInMainWorld(
-    'api', {
-        loadFile: (path) => ipcRenderer.invoke('load-file', path),
-        onSaveFile: (callback) => ipcRenderer.on('save-file', callback)
-    }
-);
+contextBridge.exposeInMainWorld('electronAPI', {
+    openFile: (callback) => ipcRenderer.on('file-selected', callback),
+    readFile: (path, callback) => fs.readFile(path, 'utf-8', callback),
+    send: (channel, data) => ipcRenderer.send(channel, data)
+});

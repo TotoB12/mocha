@@ -10,7 +10,15 @@
     "build": "webpack --config webpack.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "app:dir": "electron-builder --dir",
+    "app:dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.antoninbeliard.mocha",
+    "mac": {
+      "category": "code.editor"
+    }
   },
   "repository": {
     "type": "git",
@@ -33,6 +41,7 @@
     "@electron/fuses": "^1.8.0",
     "css-loader": "^7.1.1",
     "electron": "^30.0.1",
+    "electron-builder": "^24.13.3",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^4.0.0",

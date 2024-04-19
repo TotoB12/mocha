@@ -18,6 +18,18 @@ function createWindow() {
     });
 
     mainWindow.loadFile('index.html');
+
+    ipcMain.on('open-file-dialog', (event) => {
+        dialog.showOpenDialog(mainWindow, {
+            properties: ['openFile']
+        }).then(result => {
+            if (!result.canceled) {
+                event.sender.send('file-selected', result.filePaths[0]);
+            }
+        }).catch(err => {
+            console.log(err);
+        });
+    });
 }
 
 app.whenReady().then(createWindow);

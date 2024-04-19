@@ -1,11 +1,75 @@
 const { ipcRenderer } = require('electron');
 const { Titlebar } = require("custom-electron-titlebar");
+const fs = require('fs');
+import * as monaco from 'monaco-editor';
 
-window.addEventListener('DOMContentLoaded', () => {
-  new Titlebar();
+let currentEditor;
+let titlebar = new Titlebar();
+let currentFilePath = '';
+
+document.getElementById('fileSelectBtn').addEventListener('click', () => {
+  ipcRenderer.send('open-file-dialog');
 });
 
-import * as monaco from 'monaco-editor';
+ipcRenderer.on('file-selected', (event, path) => {
+  fs.readFile(path, 'utf-8', (err, data) => {
+    if (err) {
+      alert('An error occurred reading the file:', err);
+      return;
+    }
+    const fileName = path.split('\\').pop();
+    currentFilePath = path;
+    showEditor(data, fileName);
+  });
+});
+
+function showEditor(fileContents, fileName) {
+  document.getElementById('welcomePage').style.display = 'none';
+  const container = document.getElementById('editorContainer');
+  container.style.display = 'block';
+
+  if (currentEditor) {
+    currentEditor.dispose(); // Dispose old editor instance if exists
+  }
+
+  currentEditor = monaco.editor.create(container, {
+    value: fileContents,
+    language: 'javascript',
+    automaticLayout: true,
+    fontSize: 18,
+  });
+
+  setTitle(fileName);  // Set the initial title without the star
+
+  currentEditor.onDidChangeModelContent(() => {
+    setTitle(fileName + " *");  // Add a star to indicate unsaved changes
+  });
+
+  window.addEventListener('keydown', function (event) {
+    if (event.ctrlKey && event.key === 's') {
+      event.preventDefault();  // Prevent the browser's save dialog
+      saveFile();
+    }
+  });
+}
+
+function saveFile() {
+  const model = currentEditor.getModel();
+  const value = model.getValue();
+
+  fs.writeFile(currentFilePath, value, (err) => {
+    if (err) {
+      alert('An error occurred saving the file:', err);
+      return;
+    }
+    const fileName = currentFilePath.split('\\').pop();
+    setTitle(fileName);  // Update title to remove the star
+  });
+}
+
+function setTitle(title) {
+  titlebar.updateTitle(title);  // Update the custom titlebar's title
+}
 
 self.MonacoEnvironment = {
 	getWorkerUrl: function (moduleId, label) {
@@ -48,10 +112,10 @@ monaco.editor.setTheme('default')
 
 // monaco.editor.setTheme('vs-dark');
 
-monaco.editor.create(document.getElementById('container'), {
-	value: '',
-	language: 'javascript',
-	automaticLayout: true,
-	fontSize: 18,
-    // fontFamily: 'Consolas, "Courier New", monospace',
-});
+// monaco.editor.create(document.getElementById('container'), {
+// 	value: '',
+// 	language: 'javascript',
+// 	automaticLayout: true,
+// 	fontSize: 18,
+//   // fontFamily: 'Consolas, "Courier New", monospace',
+// });
