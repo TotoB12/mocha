@@ -29,7 +29,7 @@ function showEditor(fileContents, fileName) {
   container.style.display = 'block';
 
   if (currentEditor) {
-    currentEditor.dispose(); // Dispose old editor instance if exists
+    currentEditor.dispose();
   }
 
   currentEditor = monaco.editor.create(container, {
@@ -39,15 +39,15 @@ function showEditor(fileContents, fileName) {
     fontSize: 18,
   });
 
-  setTitle(fileName);  // Set the initial title without the star
+  setTitle(fileName);
 
   currentEditor.onDidChangeModelContent(() => {
-    setTitle(fileName + " *");  // Add a star to indicate unsaved changes
+    setTitle(fileName + " *");
   });
 
   window.addEventListener('keydown', function (event) {
     if (event.ctrlKey && event.key === 's') {
-      event.preventDefault();  // Prevent the browser's save dialog
+      event.preventDefault();
       saveFile();
     }
   });
@@ -63,12 +63,12 @@ function saveFile() {
       return;
     }
     const fileName = currentFilePath.split('\\').pop();
-    setTitle(fileName);  // Update title to remove the star
+    setTitle(fileName);
   });
 }
 
 function setTitle(title) {
-  titlebar.updateTitle(title);  // Update the custom titlebar's title
+  titlebar.updateTitle(title);
 }
 
 self.MonacoEnvironment = {
