@@ -1,0 +1,26 @@
+{
+  "name": "mocha",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TotoB12/mocha.git"
+  },
+  "author": "TotoB12",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TotoB12/mocha/issues"
+  },
+  "homepage": "https://github.com/TotoB12/mocha#readme",
+  "devDependencies": {
+    "electron": "^30.0.1"
+  },
+  "dependencies": {
+    "highlight.js": "^11.9.0"
+  }
+}

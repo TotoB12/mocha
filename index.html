@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Electron Editor</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/default.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div id="welcomeMenu" style="display: flex; justify-content: center; align-items: center; height: 100%;">
+    <button id="openFileBtn">Open File</button>
+  </div>
+  <pre id="editor" style="display:none; width:100%; height:100%;"><code></code></pre>
+  <script src="renderer.js"></script>
+</body>
+</html>
