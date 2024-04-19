@@ -1,46 +1,57 @@
 const { ipcRenderer } = require('electron');
-const hljs = require('highlight.js');
 const { Titlebar } = require("custom-electron-titlebar");
-
-const openFileBtn = document.getElementById('openFileBtn');
-const editorContainer = document.getElementById('editor');
-const codeBlock = document.querySelector('#editor > code');
-const welcomeMenu = document.getElementById('welcomeMenu');
 
 window.addEventListener('DOMContentLoaded', () => {
   new Titlebar();
 });
 
-openFileBtn.addEventListener('click', async () => {
-  try {
-    const result = await ipcRenderer.invoke('open-file-dialog');
-    if (result) {
-      welcomeMenu.style.display = 'none';
-      editorContainer.style.display = 'block';
-      document.title = result.filePath.split('\\').pop();
+import * as monaco from 'monaco-editor';
 
-      const language = determineLanguage(result.filePath);
-      if (language && hljs.getLanguage(language)) {
-        const highlightedCode = hljs.highlight(result.content, { language }).value;
-        codeBlock.innerHTML = highlightedCode;
-      } else {
-        codeBlock.textContent = result.content;
+self.MonacoEnvironment = {
+	getWorkerUrl: function (moduleId, label) {
+		if (label === 'json') {
+			return './json.worker.bundle.js';
+		}
+		if (label === 'css' || label === 'scss' || label === 'less') {
+			return './css.worker.bundle.js';
+		}
+		if (label === 'html' || label === 'handlebars' || label === 'razor') {
+			return './html.worker.bundle.js';
+		}
+		if (label === 'typescript' || label === 'javascript') {
+			return './ts.worker.bundle.js';
+		}
+		return './editor.worker.bundle.js';
+	}
+};
+
+monaco.editor.defineTheme('default', {
+    base: 'vs-dark',
+    inherit: true,
+    rules: [
+      {
+        token: "identifier",
+        foreground: "9CDCFE"
+      },
+      {
+        token: "identifier.function",
+        foreground: "DCDCAA"
+      },
+      {
+        token: "type",
+        foreground: "1AAFB0"
       }
-    }
-  } catch (error) {
-    alert('An error occurred reading the file:' + error);
-  }
-});
+    ],
+    colors: {}
+    });
+monaco.editor.setTheme('default')
 
-function determineLanguage(filePath) {
-  const extension = filePath.split('.').pop().toLowerCase();
-  switch (extension) {
-    case 'js':
-    case 'mjs':
-      return 'javascript';
-    case 'json':
-      return 'json';
-    default:
-      return null;
-  }
-}
+// monaco.editor.setTheme('vs-dark');
+
+monaco.editor.create(document.getElementById('container'), {
+	value: '',
+	language: 'javascript',
+	automaticLayout: true,
+	fontSize: 18,
+    // fontFamily: 'Consolas, "Courier New", monospace',
+});

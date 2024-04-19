@@ -10,24 +10,14 @@ function createWindow() {
         frame: false,
         titleBarStyle: 'hidden',
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            nodeIntegration: true, // true
+            contextIsolation: false, // false
+            worldSafeExecuteJavaScript: true,
+            // preload: path.join(__dirname, 'preload.js')
         }
     });
 
     mainWindow.loadFile('index.html');
-
-    ipcMain.handle('open-file-dialog', async (event) => {
-        const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
-            properties: ['openFile']
-        });
-        if (canceled) {
-            return;
-        } else {
-            const content = await fs.promises.readFile(filePaths[0], 'utf8');
-            return { content, filePath: filePaths[0] };
-        }
-    });
 }
 
 app.whenReady().then(createWindow);
