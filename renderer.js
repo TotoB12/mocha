@@ -1,10 +1,15 @@
 const { ipcRenderer } = require('electron');
 const hljs = require('highlight.js');
+const { Titlebar } = require("custom-electron-titlebar");
 
 const openFileBtn = document.getElementById('openFileBtn');
 const editorContainer = document.getElementById('editor');
 const codeBlock = document.querySelector('#editor > code');
 const welcomeMenu = document.getElementById('welcomeMenu');
+
+window.addEventListener('DOMContentLoaded', () => {
+  new Titlebar();
+});
 
 openFileBtn.addEventListener('click', async () => {
   try {
@@ -36,6 +41,6 @@ function determineLanguage(filePath) {
     case 'json':
       return 'json';
     default:
-      return null; // default to no highlighting
+      return null;
   }
 }

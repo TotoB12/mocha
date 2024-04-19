@@ -1,19 +1,21 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { setupTitlebar, attachTitlebarToWindow } = require("custom-electron-titlebar/main");
 const fs = require('fs');
 const path = require('path');
 
+setupTitlebar();
+
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        frame: false,
+        titleBarStyle: 'hidden',
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false,
+            contextIsolation: false
         }
     });
 
     mainWindow.loadFile('index.html');
-    //   mainWindow.setMenuBarVisibility(false);
 
     ipcMain.handle('open-file-dialog', async (event) => {
         const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
@@ -29,7 +31,6 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
-
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

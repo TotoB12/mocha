@@ -21,6 +21,7 @@
     "electron": "^30.0.1"
   },
   "dependencies": {
+    "custom-electron-titlebar": "^4.2.8",
     "highlight.js": "^11.9.0"
   }
 }
