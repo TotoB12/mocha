@@ -1,13 +1,16 @@
 {
   "name": "mocha",
+  "productName": "Mocha Editor",
   "version": "1.0.0",
-  "description": "",
+  "description": "A lightweight and simple IDE based on Electron.",
   "main": "index.js",
   "scripts": {
     "go": "npm run build && npm run start",
-    "start": "electron .",
+    "start": "electron-forge start",
     "build": "webpack --config webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,14 @@
   },
   "homepage": "https://github.com/TotoB12/mocha#readme",
   "devDependencies": {
+    "@electron-forge/cli": "^7.4.0",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
+    "@electron-forge/plugin-fuses": "^7.4.0",
+    "@electron/fuses": "^1.8.0",
     "css-loader": "^7.1.1",
     "electron": "^30.0.1",
     "file-loader": "^6.2.0",
@@ -30,6 +41,7 @@
   },
   "dependencies": {
     "custom-electron-titlebar": "^4.2.8",
+    "electron-squirrel-startup": "^1.0.0",
     "highlight.js": "^11.9.0",
     "monaco-editor": "^0.47.0"
   }
