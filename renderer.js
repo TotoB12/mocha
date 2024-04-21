@@ -29,27 +29,32 @@ function showEditor(fileContents, fileName) {
   container.style.display = 'block';
 
   if (currentEditor) {
-    currentEditor.dispose();
+      currentEditor.dispose();
   }
 
+  const model = monaco.editor.createModel(
+      fileContents,
+      undefined,
+      monaco.Uri.file(fileName)
+  );
+
   currentEditor = monaco.editor.create(container, {
-    value: fileContents,
-    language: 'javascript',
-    automaticLayout: true,
-    fontSize: 18,
+      model: model,
+      automaticLayout: true,
+      fontSize: 18,
   });
 
   setTitle(fileName);
 
   currentEditor.onDidChangeModelContent(() => {
-    setTitle(fileName + " *");
+      setTitle(fileName + " *");
   });
 
   window.addEventListener('keydown', function (event) {
-    if (event.ctrlKey && event.key === 's') {
-      event.preventDefault();
-      saveFile();
-    }
+      if (event.ctrlKey && event.key === 's') {
+          event.preventDefault();
+          saveFile();
+      }
   });
 }
 
