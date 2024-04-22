@@ -8,7 +8,7 @@ html {
   color: #ffffff;
 }
 
-.monaco-editor .view-lines {
+.monaco-editor .view-lines, .monaco-editor .sticky-line-content {
   text-shadow: 0 0 1px, 0 0 30px; /* 10 20 */
 }
 

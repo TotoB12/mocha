@@ -17,6 +17,8 @@ function createWindow() {
         }
     });
 
+    mainWindow.maximize();
+
     mainWindow.loadFile('index.html');
 
     ipcMain.on('open-file-dialog', (event) => {
